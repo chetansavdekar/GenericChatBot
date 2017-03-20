@@ -46,7 +46,7 @@ namespace TogetherChatBot
 
         private static async Task InitiateTogetherActivity(Activity activity)
         {
-            string[] strArray = { "1", "2", "3", "4", "5" };
+            string[] strArray = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
             ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             if ((activity.Text.ToLower().Equals("hi")) || activity.Text.ToLower().Equals("hello"))
@@ -100,7 +100,7 @@ namespace TogetherChatBot
 
         private static async Task InitiateMorrisonActivity(Activity activity)
         {
-
+            string[] strArray = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
             ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             if ((activity.Text.ToLower().Equals("hi")) || activity.Text.ToLower().Equals("hello"))
@@ -115,13 +115,28 @@ namespace TogetherChatBot
             }
             else if (activity.Text.ToLower().Contains("name"))
             {
-                Activity reply = activity.CreateReply("Thanks. Please find below the ingredients required. 140g plain flour,4 eggs,200 ml milk, sunflower oil for 8 large puds. Would you like to add the items to your cart?");                
+                Activity reply = activity.CreateReply("Thanks. Please find below the ingredients required. 140g plain flour,4 eggs,200 ml milk, sunflower oil for 8 large puds. Would you like to add the items to your cart?");
                 await connector.Conversations.ReplyToActivityAsync(reply);
-            }          
-            else if ((activity.Text.ToLower().Contains("yes")) || activity.Text.ToLower().Contains("please"))
+            }
+            else if ((activity.Text.ToLower().Equals("y")) || (activity.Text.ToLower().Contains("yes")) || activity.Text.ToLower().Contains("please"))
             {
-                Activity reply = activity.CreateReply("Items added to your cart. Please login to checkout. Please rate your experience with us here");
+                Activity reply = activity.CreateReply("Items added to your cart. Please login to checkout. Please rate your experience with us here. (1 - 10) 1 - lowest, 10 - highest ");
                 await connector.Conversations.ReplyToActivityAsync(reply);
+            }
+            else if (strArray.Any(activity.Text.Equals))
+            {
+                int rating = Convert.ToInt32(activity.Text);
+                if (rating >= 7)
+                {
+                    Activity reply = activity.CreateReply("Thanks for your rating!");
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+                else if (rating < 7)
+                {
+                    Activity reply = activity.CreateReply("Thanks for your rating! Please tell us to improve ourselves.");
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+
             }
             else if ((activity.Text.ToLower().Contains("thanks")) || (activity.Text.ToLower().Contains("thank")) || (activity.Text.ToLower().Contains("ok")))
             {
