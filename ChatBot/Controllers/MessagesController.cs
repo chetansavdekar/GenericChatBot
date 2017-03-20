@@ -11,19 +11,18 @@ using TogetherChatBot.Models;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using System.Configuration;
+using System.Web;
 
 namespace TogetherChatBot
 {
     [BotAuthentication]
     public class MessagesController : ApiController
-    {
-        /// <summary>
-        /// POST: api/Messages
-        /// Receive a message from a user and reply to it
-        /// </summary>
+    {      
+     
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();
+            //string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();
+            string initiatePOCFor = Convert.ToString(HttpContext.Current.Application["InitiatePOCFor"]);
             if (activity.Type == ActivityTypes.Message)
             {
                 if (initiatePOCFor.Equals("T"))
