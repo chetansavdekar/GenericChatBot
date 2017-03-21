@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using StackExchange.Redis;
 
 namespace TogetherChatBot.Controllers
 {
@@ -13,13 +14,17 @@ namespace TogetherChatBot.Controllers
         [HttpGet]
         public IHttpActionResult SaveSession(string client)
         {
-            var session = HttpContext.Current.Application;
-            if (session != null)
-            {
-               session["InitiatePOCFor"] = client;
-            }
-            // HttpContext.Current.Session["InitiatePOCFor"] = client;
+
+            IDatabase cache = CacheManager.Connection.GetDatabase();
+
+            // Perform cache operations using the cache object...
+            // Simple put of integral data types into the cache
+            cache.StringSet("InitiatePOCFor", client);
+            //cache.StringSet("key2", 25);
+
             return Ok();
         }
+
+       
     }
 }

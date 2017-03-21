@@ -12,6 +12,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using System.Configuration;
 using System.Web;
+using StackExchange.Redis;
 
 namespace TogetherChatBot
 {
@@ -21,8 +22,13 @@ namespace TogetherChatBot
      
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();
-            //string initiatePOCFor = Convert.ToString(HttpContext.Current.Application["InitiatePOCFor"]);
+            IDatabase cache = CacheManager.Connection.GetDatabase();
+            // Simple get of data types from the cache
+            string initiatePOCFor = cache.StringGet("InitiatePOCFor");
+            //int key2 = (int)cache.StringGet("key2");
+
+            //string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();          
+
             if (activity.Type == ActivityTypes.Message)
             {
                 if (initiatePOCFor.Equals("T"))
