@@ -114,7 +114,7 @@ namespace TogetherChatBot
             }
             else if (activity.Text.ToLower().Contains("chetan") || activity.Text.ToLower().Contains("srinivas"))
             {
-                Activity reply = activity.CreateReply("Thanks. Please find below the ingredients required. 140g plain flour,4 eggs,200 ml milk, sunflower oil for 8 large puds. Would you like to add the items to your cart?");
+                Activity reply = activity.CreateReply("Thanks " + activity.Text.ToString() + ". Please find below the ingredients required. 140g plain flour,4 eggs,200 ml milk, sunflower oil for 8 large puds. Would you like to add the items to your cart?");
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
             else if ((activity.Text.ToLower().Equals("y")) || (activity.Text.ToLower().Contains("yes")) || activity.Text.ToLower().Contains("please"))
