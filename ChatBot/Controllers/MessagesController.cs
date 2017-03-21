@@ -23,12 +23,10 @@ namespace TogetherChatBot
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
             IDatabase cache = CacheManager.Connection.GetDatabase();
-            // Simple get of data types from the cache
             string initiatePOCFor = cache.StringGet("InitiatePOCFor");
-            //int key2 = (int)cache.StringGet("key2");
 
-            //string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();          
-
+           // string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();          
+            
             if (activity.Type == ActivityTypes.Message)
             {
                 if (initiatePOCFor.Equals("T"))
@@ -113,16 +111,16 @@ namespace TogetherChatBot
                 Activity reply = activity.CreateReply("Hello there! How can I help you today?");
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
-            else if (activity.Text.ToLower().Contains("ingredients") || activity.Text.ToLower().Contains("pudding"))
-            {
-                Activity reply = activity.CreateReply("Sure. Can I have your name please?");
-                await connector.Conversations.ReplyToActivityAsync(reply);
-            }
-            else if (activity.Text.ToLower().Contains("chetan") || activity.Text.ToLower().Contains("srinivas"))
-            {
-                Activity reply = activity.CreateReply("Thanks " + activity.Text.ToString() + ". Please find below the ingredients required. 140g plain flour,4 eggs,200 ml milk, sunflower oil for 8 large puds. Would you like to add the items to your cart?");
-                await connector.Conversations.ReplyToActivityAsync(reply);
-            }
+            //else if (activity.Text.ToLower().Contains("ingredients") || activity.Text.ToLower().Contains("pudding"))
+            //{
+            //    Activity reply = activity.CreateReply("Sure. Can I have your name please?");
+            //    await connector.Conversations.ReplyToActivityAsync(reply);
+            //}
+            //else if (activity.Text.ToLower().Contains("chetan") || activity.Text.ToLower().Contains("srinivas"))
+            //{
+            //    Activity reply = activity.CreateReply("Thanks " + activity.Text.ToString() + ". Please find below the ingredients required. 140g plain flour,4 eggs,200 ml milk, sunflower oil for 8 large puds. Would you like to add the items to your cart?");
+            //    await connector.Conversations.ReplyToActivityAsync(reply);
+            //}
             else if ((activity.Text.ToLower().Equals("y")) || (activity.Text.ToLower().Contains("yes")) || activity.Text.ToLower().Contains("please"))
             {
                 Activity reply = activity.CreateReply("Items added to your cart. Please login to checkout. Please rate your experience with us here. (1 - 10) 1 - lowest, 10 - highest ");
@@ -131,22 +129,28 @@ namespace TogetherChatBot
             else if (strArray.Any(activity.Text.Equals))
             {
                 int rating = Convert.ToInt32(activity.Text);
-                if (rating >= 7)
-                {
-                    Activity reply = activity.CreateReply("Thanks for your rating!");
-                    await connector.Conversations.ReplyToActivityAsync(reply);
-                }
-                else if (rating < 7)
-                {
-                    Activity reply = activity.CreateReply("Thanks for your rating! Please tell us to improve ourselves.");
-                    await connector.Conversations.ReplyToActivityAsync(reply);
-                }
+                Activity reply = activity.CreateReply("Thanks for your rating! Is there anything else I can help you with?");
+                await connector.Conversations.ReplyToActivityAsync(reply);
+                //if (rating >= 7)
+                //{
+                //    Activity reply = activity.CreateReply("Thanks for your rating! Is there anything else I can help you with?");
+                //    await connector.Conversations.ReplyToActivityAsync(reply);
+                //}
+                //else if (rating < 7)
+                //{
+                //    Activity reply = activity.CreateReply("Thanks for your rating! Please let us know to improve ourselves.");
+                //    await connector.Conversations.ReplyToActivityAsync(reply);
+                //}
 
             }
-            else if ((activity.Text.ToLower().Contains("thanks")) || (activity.Text.ToLower().Contains("thank")) || (activity.Text.ToLower().Contains("ok")))
+            else if ((activity.Text.ToLower().Contains("thanks")) || (activity.Text.ToLower().Contains("thank")) || (activity.Text.ToLower().Contains("ok")) || (activity.Text.ToLower().Contains("nothing")) || (activity.Text.ToLower().Contains("no")))
             {
                 Activity reply = activity.CreateReply("Ok. Have a good day!");
                 await connector.Conversations.ReplyToActivityAsync(reply);
+            }
+            else
+            {
+                await Conversation.SendAsync(activity, MakePuddingDialog);
             }
 
         }
@@ -190,6 +194,11 @@ namespace TogetherChatBot
         internal static IDialog<Loans> MakeLoanDialog()
         {
             return Chain.From(() => FormDialog.FromForm(Loans.BuildForm));
+        }
+
+        internal static IDialog<Pudding> MakePuddingDialog()
+        {
+            return Chain.From(() => FormDialog.FromForm(Pudding.BuildForm));
         }
 
         //internal static IDialog<Account> MakeAccountDialog()
