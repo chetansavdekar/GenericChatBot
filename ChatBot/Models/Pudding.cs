@@ -18,7 +18,7 @@ namespace TogetherChatBot.Models
     [Serializable]
     public class Pudding
     {        
-        [Prompt("What kind of {&} you are looking for? Please click any one of these.  {||}", ChoiceFormat = "{1}")]
+        [Prompt("What kind of {&} you are looking for? Please choose any one of these.  {||}", ChoiceFormat = "{1}")]
         public PuddingTypes? PuddingType;
 
         [Prompt("Sure. Can I have your name please?")]
