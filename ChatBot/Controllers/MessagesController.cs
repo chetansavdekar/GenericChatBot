@@ -21,8 +21,8 @@ namespace TogetherChatBot
      
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            //string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();
-            string initiatePOCFor = Convert.ToString(HttpContext.Current.Application["InitiatePOCFor"]);
+            string initiatePOCFor = ConfigurationManager.AppSettings["InitiatePOCFor"].ToString();
+            //string initiatePOCFor = Convert.ToString(HttpContext.Current.Application["InitiatePOCFor"]);
             if (activity.Type == ActivityTypes.Message)
             {
                 if (initiatePOCFor.Equals("T"))
