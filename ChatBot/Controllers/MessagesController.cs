@@ -112,7 +112,7 @@ namespace TogetherChatBot
                 Activity reply = activity.CreateReply("Sure. Can I have your name please?");
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
-            else if (activity.Text.ToLower().Contains("name"))
+            else if (activity.Text.ToLower().Contains("chetan") || activity.Text.ToLower().Contains("srinivas"))
             {
                 Activity reply = activity.CreateReply("Thanks. Please find below the ingredients required. 140g plain flour,4 eggs,200 ml milk, sunflower oil for 8 large puds. Would you like to add the items to your cart?");
                 await connector.Conversations.ReplyToActivityAsync(reply);
